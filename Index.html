@@ -1,0 +1,148 @@
+ <!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisi Mutuo e Convenienza</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .input-field {
+            margin: 10px 0;
+            padding: 8px;
+            width: 250px;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Scopri quanto puoi risparmiare rinegoziando il tuo mutuo</h1>
+
+    <label>Rata mensile attuale (€):</label>
+    <input type="number" id="rataVariabile" class="input-field" required><br>
+
+    <label>Tasso di interesse attuale (%):</label>
+    <input type="number" id="tassoVariabile" class="input-field"><br>
+
+    <label>Durata residua del mutuo (anni):</label>
+    <input type="number" id="durataMutuo" class="input-field" required><br>
+
+    <button class="button" onclick="calcolaConvenienza()">Calcola Convenienza</button>
+
+    <h2 id="risultatoConvenienza"></h2>
+    <p id="spiegazioneRisparmio"></p>
+
+    <button id="proseguiAnalisi" class="button hidden" onclick="mostraAnalisiFinanziaria()">Prosegui con analisi creditizia</button>
+
+    <div id="analisiFinanziaria" class="hidden">
+        <h2>Analisi Finanziaria</h2>
+
+        <label>Tipo di lavoro:</label>
+        <select id="tipoLavoro" class="input-field">
+            <option value="indeterminato">Tempo Indeterminato</option>
+            <option value="determinato">Tempo Determinato</option>
+            <option value="autonomo">Lavoratore Autonomo</option>
+        </select><br>
+
+        <label>Reddito mensile (€):</label>
+        <input type="number" id="redditoMensile" class="input-field"><br>
+        <label>Reddito annuale (€):</label>
+        <input type="number" id="redditoAnnuale" class="input-field"><br>
+
+        <label>Altri impegni finanziari (€):</label>
+        <input type="number" id="altriImpegni" class="input-field"><br>
+
+        <button class="button" onclick="calcolaRataReddito()">Calcola Rapporto Rata/Reddito</button>
+        <h3 id="risultatoRataReddito"></h3>
+
+        <button class="button" onclick="inviaWhatsApp()">Invia tramite WhatsApp</button>
+    </div>
+
+    <script>
+        function calcolaConvenienza() {
+            const rataVariabile = parseFloat(document.getElementById('rataVariabile').value);
+            const tassoVariabile = parseFloat(document.getElementById('tassoVariabile').value) || 4.5;
+            const durataMutuo = parseInt(document.getElementById('durataMutuo').value);
+
+            const capitaleResiduo = (rataVariabile * (1 - Math.pow(1 + tassoVariabile / 100 / 12, -durataMutuo * 12))) / (tassoVariabile / 100 / 12);
+            const rataFissa = capitaleResiduo * (3 / 100 / 12) / (1 - Math.pow(1 + 3 / 100 / 12, -durataMutuo * 12));
+
+            const totalePagatoAttuale = rataVariabile * durataMutuo * 12;
+            const totalePagatoFisso = rataFissa * durataMutuo * 12;
+            const risparmioTotale = totalePagatoAttuale - totalePagatoFisso;
+            const differenzaMensile = rataVariabile - rataFissa;
+            const differenzaAnnuale = differenzaMensile * 12;
+
+            document.getElementById('risultatoConvenienza').innerHTML = `
+                Totale pagato con l'attuale mutuo: €${totalePagatoAttuale.toLocaleString('it-IT', { maximumFractionDigits: 0 })}<br>
+                Totale pagato con il mutuo rinegoziato con tasso fisso: €${totalePagatoFisso.toLocaleString('it-IT', { maximumFractionDigits: 0 })}<br>
+                Risparmio totale: €${risparmioTotale.toLocaleString('it-IT', { maximumFractionDigits: 0 })}<br>
+                Differenza mensile tra vecchio mutuo e nuovo mutuo: €${differenzaMensile.toLocaleString('it-IT', { maximumFractionDigits: 0 })}<br>
+                Differenza annuale tra rata vecchio mutuo e nuovo mutuo: €${differenzaAnnuale.toLocaleString('it-IT', { maximumFractionDigits: 0 })}
+            `;
+
+            document.getElementById('spiegazioneRisparmio').innerText = "Il risparmio è calcolato con un nuovo mutuo a tasso fisso. Con il tasso fisso si ottiene una maggiore sicurezza nel lungo periodo, riducendo l'impatto di eventuali aumenti futuri dei tassi di interesse. La domanda di rinegoziazione delle condizioni del mutuo è subordinata all'analisi del credito.";
+
+            // Mostra il pulsante per proseguire con l'analisi creditizia
+            document.getElementById('proseguiAnalisi').classList.remove('hidden');
+        }
+
+        function mostraAnalisiFinanziaria() {
+            // Mostra la sezione di analisi finanziaria
+            document.getElementById('analisiFinanziaria').classList.remove('hidden');
+            document.getElementById('proseguiAnalisi').classList.add('hidden');
+        }
+
+        function calcolaRataReddito() {
+            const tipoLavoro = document.getElementById('tipoLavoro').value;
+            const rataVariabile = parseFloat(document.getElementById('rataVariabile').value);
+            const altriImpegni = parseFloat(document.getElementById('altriImpegni').value) || 0;
+
+            let redditoAnnuo = parseFloat(document.getElementById('redditoAnnuale').value);
+            const redditoMensile = parseFloat(document.getElementById('redditoMensile').value);
+
+            if (!redditoAnnuo && redditoMensile) {
+                redditoAnnuo = redditoMensile * (tipoLavoro === 'autonomo' ? 12 : 13);
+            }
+
+            const totaleImpegniMensili = rataVariabile + altriImpegni;
+            const rapportoRataReddito = (totaleImpegniMensili * 12) / redditoAnnuo * 100;
+
+            document.getElementById('risultatoRataReddito').innerText = `Rapporto rata/reddito: ${rapportoRataReddito.toFixed(2)}%`;
+        }
+
+        function inviaWhatsApp() {
+            const rataVariabile = document.getElementById('rataVariabile').value;
+            const tassoVariabile = document.getElementById('tassoVariabile').value || 4.5;
+            const durataMutuo = document.getElementById('durataMutuo').value;
+            const tipoLavoro = document.getElementById('tipoLavoro').value;
+            const redditoMensile = document.getElementById('redditoMensile').value;
+            const redditoAnnuale = document.getElementById('redditoAnnuale').value;
+            const altriImpegni = document.getElementById('altriImpegni').value;
+
+            const messaggio = `Dettagli sul risparmio del mutuo:\nRata mensile attuale: €${rataVariabile}\nTasso di interesse attuale: ${tassoVariabile}%\nDurata residua: ${durataMutuo} anni\nTipo di lavoro: ${tipoLavoro}\nReddito mensile: €${redditoMensile}\nReddito annuale: €${redditoAnnuale}\nAltri impegni finanziari: €${altriImpegni}\nRisultato rapporto rata/reddito: ${(document.getElementById('risultatoRataReddito').innerText)}`;
+
+                        const messaggioEncode = encodeURIComponent(messaggio);
+            const linkWhatsApp = `https://wa.me/?text=${messaggioEncode}`;
+            window.open(linkWhatsApp, '_blank');
+        }
+    </script>
+</body>
+</html>
+
