@@ -139,19 +139,19 @@
     const redditoAnnuale = document.getElementById('redditoAnnuale').value || "non specificato";
     const altriImpegni = document.getElementById('altriImpegni').value;
 
-    let messaggio = "Ecco i dati per la rinegoziazione del mutuo:%0A";
-    if (rataVariabile) messaggio += `- Rata mensile attuale: €${rataVariabile}%0A`;
-    if (tassoVariabile) messaggio += `- Tasso di interesse attuale: ${tassoVariabile}%0A`;
-    if (durataMutuo) messaggio += `- Durata residua del mutuo: ${durataMutuo} anni%0A`;
-    if (tipoLavoro) messaggio += `- Tipo di lavoro: ${tipoLavoro}%0A`;
-    if (redditoMensile) messaggio += `- Reddito mensile: €${redditoMensile}%0A`;
-    if (redditoAnnuale) messaggio += `- Reddito annuale: €${redditoAnnuale}%0A`;
-    if (altriImpegni) messaggio += `- Altri impegni mensili: €${altriImpegni}%0A`;
+    let messaggio = "Ecco i dati per la rinegoziazione del mutuo:\n";
+    if (rataVariabile) messaggio += `- Rata mensile attuale: €${rataVariabile}\n`;
+    if (tassoVariabile) messaggio += `- Tasso di interesse attuale: ${tassoVariabile}\n`;
+    if (durataMutuo) messaggio += `- Durata residua del mutuo: ${durataMutuo} anni\n`;
+    if (tipoLavoro) messaggio += `- Tipo di lavoro: ${tipoLavoro}\n`;
+    if (redditoMensile) messaggio += `- Reddito mensile: €${redditoMensile}\n`;
+    if (redditoAnnuale) messaggio += `- Reddito annuale: €${redditoAnnuale}\n`;
+    if (altriImpegni) messaggio += `- Altri impegni mensili: €${altriImpegni}\n`;
     
-    messaggio += "%0A" + "Puoi aiutarmi a risparmiare?";
+    messaggio += "\nPuoi aiutarmi a risparmiare?";
     
     // URL per aprire WhatsApp sul numero specificato
     const whatsappUrl = `https://api.whatsapp.com/send?phone=393346395727&text=${encodeURIComponent(messaggio)}`;
     window.open(whatsappUrl, "_blank");
-        }
+}
     </script>
