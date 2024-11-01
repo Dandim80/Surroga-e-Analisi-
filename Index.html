@@ -131,26 +131,27 @@
         }
 
         function inviaWhatsApp() {
-            const rataVariabile = document.getElementById('rataVariabile').value;
-            const tassoVariabile = document.getElementById('tassoVariabile').value;
-            const durataMutuo = document.getElementById('durataMutuo').value;
-            const tipoLavoro = document.getElementById('tipoLavoro').value;
-            const redditoMensile = document.getElementById('redditoMensile').value;
-            const redditoAnnuale = document.getElementById('redditoAnnuale').value || "non specificato";
-            const altriImpegni = document.getElementById('altriImpegni').value;
+    const rataVariabile = document.getElementById('rataVariabile').value;
+    const tassoVariabile = document.getElementById('tassoVariabile').value;
+    const durataMutuo = document.getElementById('durataMutuo').value;
+    const tipoLavoro = document.getElementById('tipoLavoro').value;
+    const redditoMensile = document.getElementById('redditoMensile').value;
+    const redditoAnnuale = document.getElementById('redditoAnnuale').value || "non specificato";
+    const altriImpegni = document.getElementById('altriImpegni').value;
 
-            let messaggio = "Ecco i dati per la rinegoziazione del mutuo:%0A";
-            if (rataVariabile) messaggio += `- Rata mensile attuale: €${rataVariabile}%0A`;
-            if (tassoVariabile) messaggio += `- Tasso di interesse attuale: ${tassoVariabile}%0A`;
-            if (durataMutuo) messaggio += `- Durata residua del mutuo: ${durataMutuo} anni%0A`;
-            if (tipoLavoro) messaggio += `- Tipo di lavoro: ${tipoLavoro}%0A`;
-            if (redditoMensile) messaggio += `- Reddito mensile: €${redditoMensile}%0A`;
-            if (redditoAnnuale) messaggio += `- Reddito annuale: €${redditoAnnuale}%0A`;
-            if (altriImpegni) messaggio += `- Altri impegni mensili: €${altriImpegni}%0A`;
-            
-            messaggio += "%0A" + "Puoi aiutarmi a risparmiare?";
-            const whatsappUrl = `https://wa.me/?text=${messaggio}`;
-             const url = `https://api.whatsapp.com/send?phone=393346395727&text=${encodeURIComponent(messaggio)}`;
-            window.open(whatsappUrl, "_blank");
+    let messaggio = "Ecco i dati per la rinegoziazione del mutuo:%0A";
+    if (rataVariabile) messaggio += `- Rata mensile attuale: €${rataVariabile}%0A`;
+    if (tassoVariabile) messaggio += `- Tasso di interesse attuale: ${tassoVariabile}%0A`;
+    if (durataMutuo) messaggio += `- Durata residua del mutuo: ${durataMutuo} anni%0A`;
+    if (tipoLavoro) messaggio += `- Tipo di lavoro: ${tipoLavoro}%0A`;
+    if (redditoMensile) messaggio += `- Reddito mensile: €${redditoMensile}%0A`;
+    if (redditoAnnuale) messaggio += `- Reddito annuale: €${redditoAnnuale}%0A`;
+    if (altriImpegni) messaggio += `- Altri impegni mensili: €${altriImpegni}%0A`;
+    
+    messaggio += "%0A" + "Puoi aiutarmi a risparmiare?";
+    
+    // URL per aprire WhatsApp sul numero specificato
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=393346395727&text=${encodeURIComponent(messaggio)}`;
+    window.open(whatsappUrl, "_blank");
         }
     </script>
