@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
@@ -176,23 +176,21 @@
 
             // Testo del messaggio WhatsApp
             const messaggio = `
-                Risultati Calcolo Mutuo:
-                - Rata mensile attuale: €${rataVariabile}
-                - Tasso di interesse attuale: ${tassoVariabile || 4.5}%
-                - Durata residua del mutuo: ${durataMutuo} anni
-                - Tipo di lavoro: ${tipoLavoro}
-                - Reddito mensile: €${redditoMensile}
-                - Reddito annuale: €${redditoAnnuale}
-                - Altri impegni mensili: €${altriImpegni}
-                
-                Convenienza:
-                - Totale pagato con mutuo attuale: €${totalePagatoAttuale.toLocaleString('it-IT')}
-                - Totale pagato con mutuo fisso: €${totalePagatoFisso.toLocaleString('it-IT')}
-                - Risparmio totale: €${risparmioTotale.toLocaleString('it-IT')}
-                - Differenza mensile: €${differenzaMensile.toLocaleString('it-IT')}
-                - Differenza annuale: €${differenzaAnnuale.toLocaleString('it-IT')}
+Calcolo Convenienza:
+- Rata mensile attuale: €${rataVariabile}
+- Tasso di interesse attuale: ${tassoVariabile || 4.5}%
+- Durata residua del mutuo: ${durataMutuo} anni
+- Totale pagato con mutuo attuale: €${totalePagatoAttuale.toLocaleString('it-IT')}
+- Totale pagato con mutuo fisso: €${totalePagatoFisso.toLocaleString('it-IT')}
+- Risparmio totale: €${risparmioTotale.toLocaleString('it-IT')}
+- Differenza mensile: €${differenzaMensile.toLocaleString('it-IT')}
+- Differenza annuale: €${differenzaAnnuale.toLocaleString('it-IT')} 
 
-                Puoi aiutarmi a risparmiare?
+- Tipo di lavoro: ${tipoLavoro}
+- Reddito mensile: €${redditoMensile}
+- Reddito annuale: €${redditoAnnuale}
+- Altri impegni mensili: €${altriImpegni}
+Puoi aiutarmi a risparmiare?
             `;
 
             // Codifica il messaggio per WhatsApp
