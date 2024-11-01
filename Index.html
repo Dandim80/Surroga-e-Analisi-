@@ -194,11 +194,10 @@ Puoi aiutarmi a risparmiare?
             `;
 
             // Codifica il messaggio per WhatsApp
-            const messaggioEncoded = encodeURIComponent(messaggio);
-            const url = `https://api.whatsapp.com/send?phone=393346395727&text=${encodeURIComponent(messaggio)}`;
-            window.open(url, '_blank');
-          
-        }
+    const messaggioEncoded = encodeURIComponent(messaggio);
+    const url = `https://api.whatsapp.com/send?phone=393346395727&text=${messaggioEncoded}`;
+    window.open(url, '_blank');
+}
     </script>
 
 </body>
