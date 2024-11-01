@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -41,7 +40,6 @@
             cursor: pointer;
         }
     </style>
-
 </head>
 
 <body>
@@ -49,13 +47,13 @@
     <div class="container">
         <h2>Calcolo Convenienza Mutuo</h2>
         <label>Rata mensile attuale (€):</label>
-        <input type="number" id="rataVariabile" placeholder= "Es. 650"> 
+        <input type="number" id="rataVariabile" placeholder="Es. 650"> 
 
         <label>Tasso di interesse attuale (%):</label>
         <input type="number" id="tassoVariabile" placeholder="Default: 4.5%">
 
         <label>Durata residua del mutuo (anni):</label>
-        <input type="number" id="durataMutuo" placeholder= "15 per approsimazione">
+        <input type="number" id="durataMutuo" placeholder="15 per approsimazione">
 
         <button onclick="calcolaConvenienza()">Calcola la convenienza</button>
         
@@ -79,13 +77,13 @@
             </select>
 
             <label>Reddito mensile (€):</label>
-            <input type="number" id="redditoMensile" placeholder= "Es. 1800">
+            <input type="number" id="redditoMensile" placeholder="Es. 1800">
 
             <label>Reddito annuale (€):</label>
             <input type="number" id="redditoAnnuale" placeholder="Opzionale solo se non è stato inserito reddito mensile">
 
             <label>Altri impegni mensili (€):</label>
-            <input type="number" id="altriImpegni" placeholder= "Altre rate in corso" >
+            <input type="number" id="altriImpegni" placeholder="Altre rate in corso">
 
             <button onclick="calcolaRataReddito()">Calcola rapporto rata/reddito</button>
             <div id="rapportoRataReddito"></div>
@@ -93,39 +91,48 @@
             <button onclick="inviaWhatsApp()">Invia tramite WhatsApp</button>
         </div>
     </div>
-<!-- Footer con la firma -->
-<div id="firma">
-    Powered by <strong>DDM</strong>
-</div>
 
-<!-- CSS per la firma -->
-<style>
-    #firma {
-        text-align: center;
-        font-size: 0.8em;
-        color: #555;
-        padding: 10px 0;
-        margin-top: 20px;
-    }
-    #firma strong {
-        color: #333;
-    }
-</style>
+    <!-- Footer con la firma -->
+    <div id="firma">
+        Powered by <strong>DDM</strong>
+    </div>
+
+    <!-- CSS per la firma -->
+    <style>
+        #firma {
+            text-align: center;
+            font-size: 0.8em;
+            color: #555;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+        #firma strong {
+            color: #333;
+        }
+    </style>
 
     <script>
+        // Variabili globali per memorizzare i calcoli di convenienza
+        let totalePagatoAttuale, totalePagatoFisso, risparmioTotale, differenzaMensile, differenzaAnnuale;
+
         function calcolaConvenienza() {
             const rataVariabile = parseFloat(document.getElementById('rataVariabile').value);
             const tassoVariabile = parseFloat(document.getElementById('tassoVariabile').value) || 4.5;
             const durataMutuo = parseInt(document.getElementById('durataMutuo').value);
 
+            if (isNaN(rataVariabile) || isNaN(durataMutuo) || durataMutuo <= 0 || rataVariabile <= 0) {
+                alert("Inserisci valori validi per la rata mensile e la durata residua del mutuo.");
+                return;
+            }
+
             const capitaleResiduo = (rataVariabile * (1 - Math.pow(1 + tassoVariabile / 100 / 12, -durataMutuo * 12))) / (tassoVariabile / 100 / 12);
             const rataFissa = capitaleResiduo * (3 / 100 / 12) / (1 - Math.pow(1 + 3 / 100 / 12, -durataMutuo * 12));
 
-            const totalePagatoAttuale = rataVariabile * durataMutuo * 12;
-            const totalePagatoFisso = rataFissa * durataMutuo * 12;
-            const risparmioTotale = totalePagatoAttuale - totalePagatoFisso;
-            const differenzaMensile = rataVariabile - rataFissa;
-            const differenzaAnnuale = differenzaMensile * 12;
+            totalePagatoAttuale = rataVariabile * durataMutuo * 12;
+            totalePagatoFisso = rataFissa * durataMutuo * 12;
+            risparmioTotale = totalePagatoAttuale - totalePagatoFisso;
+            differenzaMensile = rataVariabile - rataFissa;
+            differenzaAnnuale = differenzaMensile * 12;
 
             document.getElementById('risultatoConvenienza').innerHTML = `
                 Totale pagato con l'attuale mutuo: €${totalePagatoAttuale.toLocaleString('it-IT', { maximumFractionDigits: 0 })}<br>
@@ -161,20 +168,29 @@
     const redditoAnnuale = document.getElementById('redditoAnnuale').value || "non specificato";
     const altriImpegni = document.getElementById('altriImpegni').value;
 
-    let messaggio = "Ecco i dati per la rinegoziazione del mutuo:\n";
-    if (rataVariabile) messaggio += `- Rata mensile attuale: €${rataVariabile}\n`;
-    if (tassoVariabile) messaggio += `- Tasso di interesse attuale: ${tassoVariabile}\n`;
-    if (durataMutuo) messaggio += `- Durata residua del mutuo: ${durataMutuo} anni\n`;
-    if (tipoLavoro) messaggio += `- Tipo di lavoro: ${tipoLavoro}\n`;
-    if (redditoMensile) messaggio += `- Reddito mensile: €${redditoMensile}\n`;
-    if (redditoAnnuale) messaggio += `- Reddito annuale: €${redditoAnnuale}\n`;
-    if (altriImpegni) messaggio += `- Altri impegni mensili: €${altriImpegni}\n`;
-    
-    messaggio += "\nPuoi aiutarmi a risparmiare?";
-    
-    // URL per aprire WhatsApp sul numero specificato
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=393346395727&text=${encodeURIComponent(messaggio)}`;
-    window.open(whatsappUrl, "_blank");
-}
+    if (!rataVariabile || !tassoVariabile || !durataMutuo || !totalePagatoAttuale || !totalePagatoFisso || !risparmioTotale) {
+        alert("Assicurati di aver calcolato la convenienza prima di inviare il messaggio.");
+        return;
+    }
 
-    </script>
+    let messaggio = `Ecco i dati per la rinegoziazione del mutuo:\n\n`;
+    messaggio += `- Rata mensile attuale: €${rataVariabile}\n`;
+    messaggio += `- Tasso di interesse attuale: ${tassoVariabile}%\n`;
+    messaggio += `- Durata residua del mutuo: ${durataMutuo} anni\n\n`;
+
+    messaggio += `Con le condizioni rinegoziate:\n`;
+    messaggio += `- Totale pagato con mutuo attuale: €${totalePagatoAttuale.toLocaleString('it-IT')}\n`;
+    messaggio += `- Totale pagato con tasso fisso rinegoziato: €${totalePagatoFisso.toLocaleString('it-IT')}\n`;
+    messaggio += `- Risparmio totale stimato: €${risparmioTotale.toLocaleString('it-IT')}\n`;
+    messaggio += `- Differenza mensile: €${differenzaMensile.toLocaleString('it-IT')}\n`;
+    messaggio += `- Differenza annuale: €${differenzaAnnuale.toLocaleString('it-IT')}\n\n`;
+
+    messaggio += `Analisi della tua situazione:\n`;
+    messaggio += `- Tipo di lavoro: ${tipoLavoro}\n`;
+    messaggio += `- Reddito mensile: €${redditoMensile}\n`;
+    messaggio += `- Reddito annuale: €${redditoAnnuale}\n`;
+    messaggio += `- Altri impegni mensili: €${altriImpegni}\n`;
+
+    const url = `https://wa.me/?text=${encodeURIComponent(messaggio)}`;
+    window.open(url, '_blank');
+}
