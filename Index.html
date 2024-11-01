@@ -195,10 +195,9 @@ Puoi aiutarmi a risparmiare?
 
             // Codifica il messaggio per WhatsApp
             const messaggioEncoded = encodeURIComponent(messaggio);
-            const urlWhatsApp = `https://wa.me/?text=${messaggioEncoded}`;
-
-            // Apri WhatsApp in una nuova finestra/tab
-            window.open(urlWhatsApp, '_blank');
+            const url = `https://api.whatsapp.com/send?phone=393346395727&text=${encodeURIComponent(messaggio)}`;
+            window.open(url, '_blank');
+          
         }
     </script>
 
