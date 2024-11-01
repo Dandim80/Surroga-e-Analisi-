@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
@@ -46,6 +46,7 @@
 
     <div class="container">
         <h2>Calcolo Convenienza Mutuo</h2>
+        
         <label>Rata mensile attuale (€):</label>
         <input type="number" id="rataVariabile" placeholder="Es. 650"> 
 
@@ -53,7 +54,7 @@
         <input type="number" id="tassoVariabile" placeholder="Default: 4.5%">
 
         <label>Durata residua del mutuo (anni):</label>
-        <input type="number" id="durataMutuo" placeholder="15 per approsimazione">
+        <input type="number" id="durataMutuo" placeholder="15 per approssimazione">
 
         <button onclick="calcolaConvenienza()">Calcola la convenienza</button>
         
@@ -112,7 +113,6 @@
     </style>
 
     <script>
-        // Variabili globali per memorizzare i calcoli di convenienza
         let totalePagatoAttuale, totalePagatoFisso, risparmioTotale, differenzaMensile, differenzaAnnuale;
 
         function calcolaConvenienza() {
@@ -159,38 +159,50 @@
             document.getElementById('rapportoRataReddito').innerHTML = `Rapporto rata/reddito: ${rapporto.toFixed(2)}%`;
         }
 
-        function inviaWhatsApp() {
-    const rataVariabile = document.getElementById('rataVariabile').value;
-    const tassoVariabile = document.getElementById('tassoVariabile').value;
-    const durataMutuo = document.getElementById('durataMutuo').value;
-    const tipoLavoro = document.getElementById('tipoLavoro').value;
-    const redditoMensile = document.getElementById('redditoMensile').value;
-    const redditoAnnuale = document.getElementById('redditoAnnuale').value || "non specificato";
-    const altriImpegni = document.getElementById('altriImpegni').value;
+                function inviaWhatsApp() {
+            const rataVariabile = document.getElementById('rataVariabile').value;
+            const tassoVariabile = document.getElementById('tassoVariabile').value;
+            const durataMutuo = document.getElementById('durataMutuo').value;
+            const tipoLavoro = document.getElementById('tipoLavoro').value;
+            const redditoMensile = document.getElementById('redditoMensile').value;
+            const redditoAnnuale = document.getElementById('redditoAnnuale').value || "non specificato";
+            const altriImpegni = document.getElementById('altriImpegni').value || 0;
 
-    if (!rataVariabile || !tassoVariabile || !durataMutuo || !totalePagatoAttuale || !totalePagatoFisso || !risparmioTotale) {
-        alert("Assicurati di aver calcolato la convenienza prima di inviare il messaggio.");
-        return;
-    }
+            // Controlla che tutti i campi necessari siano stati compilati
+            if (!rataVariabile || !durataMutuo || !totalePagatoAttuale || !totalePagatoFisso || !risparmioTotale) {
+                alert("Assicurati di aver calcolato la convenienza prima di inviare i dati.");
+                return;
+            }
 
-    let messaggio = `Ecco i dati per la rinegoziazione del mutuo:\n\n`;
-    messaggio += `- Rata mensile attuale: €${rataVariabile}\n`;
-    messaggio += `- Tasso di interesse attuale: ${tassoVariabile}%\n`;
-    messaggio += `- Durata residua del mutuo: ${durataMutuo} anni\n\n`;
+            // Testo del messaggio WhatsApp
+            const messaggio = `
+                Risultati Calcolo Mutuo:
+                - Rata mensile attuale: €${rataVariabile}
+                - Tasso di interesse attuale: ${tassoVariabile || 4.5}%
+                - Durata residua del mutuo: ${durataMutuo} anni
+                - Tipo di lavoro: ${tipoLavoro}
+                - Reddito mensile: €${redditoMensile}
+                - Reddito annuale: €${redditoAnnuale}
+                - Altri impegni mensili: €${altriImpegni}
+                
+                Convenienza:
+                - Totale pagato con mutuo attuale: €${totalePagatoAttuale.toLocaleString('it-IT')}
+                - Totale pagato con mutuo fisso: €${totalePagatoFisso.toLocaleString('it-IT')}
+                - Risparmio totale: €${risparmioTotale.toLocaleString('it-IT')}
+                - Differenza mensile: €${differenzaMensile.toLocaleString('it-IT')}
+                - Differenza annuale: €${differenzaAnnuale.toLocaleString('it-IT')}
 
-    messaggio += `Con le condizioni rinegoziate:\n`;
-    messaggio += `- Totale pagato con mutuo attuale: €${totalePagatoAttuale.toLocaleString('it-IT')}\n`;
-    messaggio += `- Totale pagato con tasso fisso rinegoziato: €${totalePagatoFisso.toLocaleString('it-IT')}\n`;
-    messaggio += `- Risparmio totale stimato: €${risparmioTotale.toLocaleString('it-IT')}\n`;
-    messaggio += `- Differenza mensile: €${differenzaMensile.toLocaleString('it-IT')}\n`;
-    messaggio += `- Differenza annuale: €${differenzaAnnuale.toLocaleString('it-IT')}\n\n`;
+                Puoi aiutarmi a risparmiare?
+            `;
 
-    messaggio += `Analisi della tua situazione:\n`;
-    messaggio += `- Tipo di lavoro: ${tipoLavoro}\n`;
-    messaggio += `- Reddito mensile: €${redditoMensile}\n`;
-    messaggio += `- Reddito annuale: €${redditoAnnuale}\n`;
-    messaggio += `- Altri impegni mensili: €${altriImpegni}\n`;
+            // Codifica il messaggio per WhatsApp
+            const messaggioEncoded = encodeURIComponent(messaggio);
+            const urlWhatsApp = `https://wa.me/?text=${messaggioEncoded}`;
 
-    const url = `https://wa.me/?text=${encodeURIComponent(messaggio)}`;
-    window.open(url, '_blank');
-}
+            // Apri WhatsApp in una nuova finestra/tab
+            window.open(urlWhatsApp, '_blank');
+        }
+    </script>
+
+</body>
+</html>
