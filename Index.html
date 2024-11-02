@@ -135,9 +135,9 @@
             differenzaAnnuale = differenzaMensile * 12;
 
             document.getElementById('risultatoConvenienza').innerHTML = `
-                Totale pagato con l'attuale mutuo: €${totalePagatoAttuale.toLocaleString('it-IT', { maximumFractionDigits: 0 })}<br>
-                Totale pagato con il mutuo rinegoziato con tasso fisso: €${totalePagatoFisso.toLocaleString('it-IT', { maximumFractionDigits: 0 })}<br>
-                Risparmio totale: €${risparmioTotale.toLocaleString('it-IT', { maximumFractionDigits: 0 })}<br>
+                Totale da pagare con interessi con "attuale mutuo": €${totalePagatoAttuale.toLocaleString('it-IT', { maximumFractionDigits: 0 })}<br>
+                Totale da pagare con interessi con "mutuo rinegoziato": €${totalePagatoFisso.toLocaleString('it-IT', { maximumFractionDigits: 0 })}<br>
+                <strong>Risparmio totale incluso interessi: €${risparmioTotale.toLocaleString('it-IT', { maximumFractionDigits: 0 })}</strong><br>
                 Differenza mensile tra vecchio mutuo e nuovo mutuo: €${differenzaMensile.toLocaleString('it-IT', { maximumFractionDigits: 0 })}<br>
                 Differenza annuale tra rata vecchio mutuo e nuovo mutuo: €${differenzaAnnuale.toLocaleString('it-IT', { maximumFractionDigits: 0 })}
             `;
